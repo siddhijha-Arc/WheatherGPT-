@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: #fbf8fc;
+    color: #1b1b1e;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Ensure text inside chat dialog, markdown, inputs, and reading elements can be selected */
+  .select-text,
+  .markdown-body,
+  .chat-bubble,
+  input,
+  textarea {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+  }
+
+  .markdown-body strong,
+  .markdown-body b {
+    font-weight: 700 !important;
+  }
+
+  .markdown-body em,
+  .markdown-body i {
+    font-style: italic !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Neumorphic Shadows - Extruded (Raised) */
+.neo-raised {
+  box-shadow: -6px -6px 12px #FFFFFF, 6px 6px 12px #B8C2D0;
+}
+
+.neo-raised-sm {
+  box-shadow: -3px -3px 8px #FFFFFF, 3px 3px 8px #C5CFDB;
+}
+
+/* Neumorphic Shadows - Pressed (Sunken) */
+.neo-pressed {
+  box-shadow: inset -4px -4px 8px #FFFFFF, inset 4px 4px 8px #B8C2D0;
+}
+
+.neo-pressed-sm {
+  box-shadow: inset -2px -2px 5px #FFFFFF, inset 2px 2px 5px #C5CFDB;
+}
+
+/* Subtle Inner shadow for inputs */
+.neo-input {
+  box-shadow: inset -2px -2px 4px #FFFFFF, inset 2px 2px 4px #B8C2D0;
+  background-color: #fbf8fc;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.icon-fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Mobile Safe Area Padding */
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
+}
+
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 12px);
+}
+
+.safe-area-pt {
+  padding-top: env(safe-area-inset-top, 12px);
+}
+
+/* Custom smooth scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.5);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.8);
+}
+
+/* Atmospheric Intelligence & Glassmorphism Design System */
+.mesh-bg {
+  background-color: #d4e3ff;
+  background-image: 
+    radial-gradient(at 40% 20%, rgba(255, 230, 235, 0.5) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(165, 200, 255, 0.5) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(128, 243, 255, 0.3) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 24px rgba(0, 93, 172, 0.08);
+}
+
+.input-glass {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 93, 172, 0.2);
+  transition: all 0.3s ease;
+}
+
+.input-glass:focus-within {
+  border-color: #005dac;
+  box-shadow: 0 0 0 2px rgba(0, 93, 172, 0.2);
+  background: #ffffff;
+}
+
+/* Ensure Leaflet bottom-docked attribution & controls never overlap with bottom navigation */
+.leaflet-bottom {
+  bottom: 6.5rem !important;
+  z-index: 20 !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-radius: 8px !important;
+  padding: 2px 6px !important;
+  margin-left: 8px !important;
+  margin-bottom: 4px !important;
+  font-size: 9px !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Focus mode rules */
+div#root:nth-of-type(1) > div#weathergpt-app-root:nth-of-type(1) > aside#floating-voice-assistant-root:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) {
+  width: 34px;
+}
+
+div#root:nth-of-type(1) > div#weathergpt-app-root:nth-of-type(1) > aside#floating-voice-assistant-root:nth-of-type(1) > div:nth-of-type(1) {
+  width: 964px;
+}
+

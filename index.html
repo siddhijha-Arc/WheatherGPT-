@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function() {
+        if (typeof window !== 'undefined' && window.WebSocket) {
+          const OrigWebSocket = window.WebSocket;
+          function SafeViteWebSocket(url, protocols) {
+            const isVite = protocols === 'vite-hmr' ||
+              (Array.isArray(protocols) && protocols.includes('vite-hmr')) ||
+              (typeof url === 'string' && (url.includes('vite-hmr') || url.includes('/@vite/')));
+            if (!isVite) {
+              return new OrigWebSocket(url, protocols);
+            }
+            const target = new EventTarget();
+            target.url = url;
+            target.readyState = 1; // WebSocket.OPEN
+            target.binaryType = 'blob';
+            target.bufferedAmount = 0;
+            target.extensions = '';
+            target.protocol = 'vite-hmr';
+            target.onopen = null;
+            target.onmessage = null;
+            target.onerror = null;
+            target.onclose = null;
+            target.send = function() {};
+            target.close = function() {
+              target.readyState = 3;
+            };
+            setTimeout(function() {
+              if (target.readyState === 1) {
+                const ev = new Event('open');
+                target.dispatchEvent(ev);
+                if (typeof target.onopen === 'function') target.onopen(ev);
+              }
+            }, 0);
+            return target;
+          }
+          SafeViteWebSocket.prototype = OrigWebSocket.prototype;
+          SafeViteWebSocket.CONNECTING = 0;
+          SafeViteWebSocket.OPEN = 1;
+          SafeViteWebSocket.CLOSING = 2;
+          SafeViteWebSocket.CLOSED = 3;
+          window.WebSocket = SafeViteWebSocket;
+        }
+
+        const isViteWs = (e) => {
+          if (!e) return false;
+          const msg = (e.message || e.reason?.message || (e.stack ? e.stack : '') || (typeof e === 'string' ? e : '')) + '';
+          return msg.includes('WebSocket') || msg.includes('websocket') || msg.includes('[vite]') || msg.includes('@vite/client');
+        };
+
+        window.addEventListener('error', function(e) {
+          if (isViteWs(e.error) || isViteWs(e.message) || isViteWs(e)) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          if (isViteWs(e.reason) || isViteWs(e)) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        }, true);
+
+        const suppress = (arg) => {
+          if (!arg) return false;
+          const str = (arg.message || arg.stack || (typeof arg === 'string' ? arg : '')) + '';
+          return str.includes('[vite]') || str.includes('WebSocket') || str.includes('websocket') || str.includes('@vite/client');
+        };
+
+        const _err = console.error;
+        console.error = function(...args) {
+          if (args.some(suppress)) return;
+          _err.apply(console, args);
+        };
+        const _warn = console.warn;
+        console.warn = function(...args) {
+          if (args.some(suppress)) return;
+          _warn.apply(console, args);
+        };
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>WeatherGPT India</title>
+    <meta name="description" content="Conversational AI weather intelligence platform for India featuring live radar, hazard visualization, health risk analysis, and specialized modes for farmers and fishermen." />
+    <meta name="theme-color" content="#031636" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="WeatherGPT" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  </head>
+  <body class="bg-slate-100 text-slate-800 antialiased selection:bg-blue-500 selection:text-white overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+

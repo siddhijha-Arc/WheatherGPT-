@@ -1,0 +1,11 @@
+{
+  "name": "  WeatherGPT",
+  "description": "Conversational AI weather intelligence platform for India combining live map radar, hazard visualization, persona modes, farmer radio, and route risk insights.",
+  "requestFramePermissions": [
+    "geolocation",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
